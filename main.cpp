@@ -7,6 +7,17 @@
 
 using namespace std;
 
+void buildPath(unordered_map<string, string> &prevs, vector<vector<int>> &board, vector<string> &path) {
+    path.push_back(to_string(board.size()-1) + "," + to_string(board[0].size()-1));
+    auto point = prevs[to_string(board.size()-1) + "," + to_string(board[0].size()-1)];
+    while (point != "0,0") {
+      path.push_back(point);
+      point = prevs[point];
+    }
+    path.push_back(point);
+    reverse(path.begin(), path.end());
+}
+
 vector<string> bfs(vector<vector<int>> &board) {
     unordered_map<string, string> prevs;
     set<vector<int>> visited;
@@ -46,15 +57,7 @@ vector<string> bfs(vector<vector<int>> &board) {
       }
 
     }
-    // build the path from the prevs map
-    path.push_back(to_string(board.size()-1) + "," + to_string(board[0].size()-1));
-    auto point = prevs[to_string(board.size()-1) + "," + to_string(board[0].size()-1)];
-    while (point != "0,0") {
-      path.push_back(point);
-      point = prevs[point];
-    }
-    path.push_back(point);
-    reverse(path.begin(), path.end());
+    buildPath(prevs, board, path);
     return path;
 }
 
